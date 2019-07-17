@@ -1,6 +1,7 @@
 # Library
 
 This a coding task for the following scenario.
+
 Creation of a basic book list view based on the following xml.
 https://msdn.microsoft.com/en-us/library/ms762271(v=vs.85).aspx
 The xml is to be loaded, mapped into objects and the operations then shall be handled in memory.
