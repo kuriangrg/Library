@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<persons>
+  <person id="p101">
+    <name>Kurian George</name>
+    <place>Cologne</place>
+    <contact>+1111111111</contact>
+  </person>
+  <person id="p102">
+    <name>Tom</name>
+    <place>Dusseldorf</place>
+    <contact>+1111111111</contact>
+  </person>
+  <person id="p103">
+    <name>Chris</name>
+    <place>Dusseldorf</place>
+    <contact>+1111111111</contact>
+  </person>
+</persons>

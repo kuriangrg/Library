@@ -13,6 +13,8 @@ namespace LibrarySystem
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+            //Register for unity framework
+            UnityConfig.RegisterTypes();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);

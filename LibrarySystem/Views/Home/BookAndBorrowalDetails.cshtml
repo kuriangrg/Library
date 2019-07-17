@@ -1,0 +1,107 @@
+﻿@using Model.BookModels;
+
+@model BookPersonVM
+@{
+    ViewBag.Title = "Borrowal Details";
+}
+@*Show Book Details*@
+<div class="row">
+    <div class="col-lg-offset-1 col-md-6">
+        <h2>Book Details</h2>
+        <table class="table">
+            <tr>
+                <td><b>BookId</b></td>
+                <td>@Model.BookDetails.BookID</td>
+            </tr>
+            <tr>
+                <td><b>Author</b></td>
+                <td>@Model.BookDetails.Author</td>
+            </tr>
+            <tr>
+                <td><b>Description</b></td>
+                <td>
+                    @Model.BookDetails.Description
+                </td>
+            </tr>
+            <tr>
+                <td><b>Genre</b></td>
+                <td>
+                    @Model.BookDetails.Genre
+                </td>
+            </tr>
+            <tr>
+                <td><b>Price (Euro)</b></td>
+                <td>
+                    @Model.BookDetails.Price
+                </td>
+            </tr>
+            <tr>
+                <td><b>Publish Date</b></td>
+                <td>
+                    @Model.BookDetails.PublishDate.ToLongDateString()
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+@if (@Model.PersonDetails != null)
+{
+    @*Show Borrowser Details*@
+
+    <div class="row">
+        <div class="col-lg-offset-1 col-md-6">
+            <h3>Borrower Details</h3>
+            <table class="table">
+
+                <tr>
+                    <td>Person ID</td>
+                    <td>@Model.PersonDetails.PersonID</td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>@Model.PersonDetails.Name</td>
+                </tr>
+                <tr>
+                    <td>Place</td>
+                    <td>@Model.PersonDetails.Place</td>
+                </tr>
+                <tr>
+                    <td>Contact</td>
+                    <td>@Model.PersonDetails.Contact</td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+
+        <div class="row ">
+            <div class="col-lg-offset-1 col- col-md-6">
+                <h3>Available for Borrowal</h3>
+                @Html.ActionLink("Return Book", "BorrowBook", new { bookID = @Model.BookDetails.BookID })
+
+            </div>
+        </div>
+
+}
+else
+{
+    <div class="row ">
+        <div class="col-lg-offset-1 col- col-md-6">
+            <h3>Available for Borrowal</h3>
+            @Html.ActionLink("Borrow Book", "BorrowBook", new { bookID = @Model.BookDetails.BookID })
+
+        </div>
+    </div>
+}
+<br />
+
+<div class="row">
+    <div class="col-md-6">
+        @Html.ActionLink("Back to Book List", "Index")
+    </div>
+</div>
+
+
+
+

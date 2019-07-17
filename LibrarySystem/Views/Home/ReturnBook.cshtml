@@ -1,0 +1,33 @@
+﻿@using Model.BookModels;
+
+@model Book
+@{
+    ViewBag.Title = "Return Book";
+}
+
+    <div class="row">
+        <div class="col-lg-offset-1 col-md-6">
+            <h2 style="color:green">The below book has been returned successfully</h2>
+            <table class="table">
+                <tr>
+                    <td>BookId</td>
+                    <td>@Html.DisplayFor(m => m.BookID)</td>
+                </tr>
+                <tr>
+                    <td>Title</td>
+                    <td>@Model.Title</td>
+                </tr>
+                <tr>
+                    <td>Author</td>
+                    <td>@Model.Author</td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+
+<div class="row">
+    <div class="col-md-6">
+        @Html.ActionLink("Back to Book List", "Index")
+    </div>
+</div>

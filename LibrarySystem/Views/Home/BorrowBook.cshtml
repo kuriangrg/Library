@@ -1,0 +1,52 @@
+﻿@using Model.BookModels;
+
+@model Book
+@{
+    ViewBag.Title = "Borrow Book";
+}
+@using (Html.BeginForm("BorrowBook", "Home", new { BookID = Model.BookID }, FormMethod.Post))
+{
+
+    <div class="row">
+        <div class="col-lg-offset-1 col-md-4">
+            <h2>Book Borrowal</h2>
+            <table class="table">
+                <tr>
+                    <td>BookId</td>
+                    <td>@Html.DisplayFor(m => m.BookID)</td>
+                </tr>
+                <tr>
+                    <td>Title</td>
+                    <td>@Model.Title</td>
+                </tr>
+                <tr>
+                    <td>Author</td>
+                    <td>@Model.Author</td>
+                </tr>
+                <tr>
+                    <td>Borrower Selection</td>
+                    <td>
+
+                        @Html.DropDownListFor(m => m.PersonID,
+                 new SelectList(ViewBag.Persons, Model.PersonID),
+                 "Select Person",
+                 new { @class = "form-control" })
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="submit" value="Update Borrowal" /></td>
+                </tr>
+                <tr>
+                    <td><div style="color:green">@ViewBag.Success</div></td>
+                </tr>
+
+
+            </table>
+        </div>
+    </div>
+}
+<div class="row">
+    <div class="col-md-6">
+        @Html.ActionLink("Back to Book List", "Index")
+    </div>
+</div>
