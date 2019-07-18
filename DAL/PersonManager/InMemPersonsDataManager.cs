@@ -21,12 +21,29 @@ namespace DAL.PersonManager
         public InMemPersonsDataManager(ILogger logger,string personXMLFileName)
         {
             this.Logger = logger;
-            if (PersonData == null)
+            InitializePersonData(personXMLFileName);
+        }
+
+        /// <summary>
+        /// Initialize the static variable Person Data from the person.xml hosted
+        /// </summary>
+        /// <param name="personXMLFileName"></param>
+        private  void InitializePersonData(string personXMLFileName)
+        {
+            try
             {
-                XmlSerializer se = new XmlSerializer(typeof(PersonVM));
-                PersonData = (PersonVM)se.Deserialize(Helper.GetStreamFromURL(personXMLFileName));
-                PersonData.TotalPersons = PersonData.Persons.Count();
+                if (PersonData == null)
+                {
+                    XmlSerializer se = new XmlSerializer(typeof(PersonVM));
+                    PersonData = (PersonVM)se.Deserialize(Helper.GetStreamFromURL(personXMLFileName));
+                    PersonData.TotalPersons = PersonData.Persons.Count();
+                }
             }
+            catch(Exception ex)
+            {
+                Logger.Error("Error while streaming Data. File:"+ personXMLFileName, ex);
+            }
+            
         }
 
         /// <summary>

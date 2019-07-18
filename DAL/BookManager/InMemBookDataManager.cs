@@ -1,6 +1,7 @@
 ﻿using Model.BookModels;
 using Shared.Logger;
 using Shared.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
@@ -21,14 +22,30 @@ namespace DAL.BookManager
         /// <param name="bookXMLFileName"></param>
         public  InMemBookDataManager(ILogger logger,string bookXMLFileName)
         {
-            this.Logger= logger;
-            //Catalog Data fetched only once
-            if (CatalogData == null)
+            this.Logger = logger;
+            InitializeCatalogData(bookXMLFileName);
+        }
+
+        /// <summary>
+        /// Initialize static catalog data by streaming.
+        /// </summary>
+        /// <param name="bookXMLFileName"></param>
+        private  void InitializeCatalogData(string bookXMLFileName)
+        {
+            try
             {
-                XmlSerializer se = new XmlSerializer(typeof(CatalogVM));
-                //Convert XML data to CatalogVM object
-                CatalogData = (CatalogVM)se.Deserialize(Helper.GetStreamFromURL(bookXMLFileName));
-                CatalogData.TotalBooks = CatalogData.Books.Count();
+                //Catalog Data fetched only once
+                if (CatalogData == null)
+                {
+                    XmlSerializer se = new XmlSerializer(typeof(CatalogVM));
+                    //Convert XML data to CatalogVM object
+                    CatalogData = (CatalogVM)se.Deserialize(Helper.GetStreamFromURL(bookXMLFileName));
+                    CatalogData.TotalBooks = CatalogData.Books.Count();
+                }
+            }
+            catch(Exception ex)
+            {
+                Logger.Error("Error while streaming. File:"+bookXMLFileName, ex);
             }
         }
 
@@ -37,7 +54,7 @@ namespace DAL.BookManager
         /// </summary>
         /// <param name="bookID"></param>
         /// <returns></returns>
-         public Book GetBookDetails(string bookID)
+        public Book GetBookDetails(string bookID)
          {
             return CatalogData.Books.FirstOrDefault(x => x.BookID == bookID);
          }
