@@ -15,10 +15,8 @@ namespace LibrarySystem.Controllers
     /// </summary>
     public class HomeController : Controller
     {
-        private readonly IBookDetailsService BookService;
-        private readonly IPersonDetailsService PersonService;
-        private readonly IBorrowBookService BookOperationService;
         private readonly ILogger Logger;
+        private readonly IUnityLocator UnityLocatorService;
 
         /// <summary>
         /// Unity framework injection is executed in the controller
@@ -28,9 +26,7 @@ namespace LibrarySystem.Controllers
         /// <param name="BookOperationService">Injects the data service for borrowal</param>
         public HomeController(IUnityLocator unityLocator)
         {
-            this.BookService = unityLocator.GetLocator<IBookDetailsService>();
-            this.PersonService = unityLocator.GetLocator<IPersonDetailsService>();
-            this.BookOperationService = unityLocator.GetLocator<IBorrowBookService>();
+            this.UnityLocatorService = unityLocator;
             this.Logger = unityLocator.GetLocator<ILogger>();
         }
 
@@ -44,7 +40,9 @@ namespace LibrarySystem.Controllers
             {
                 Logger.Info("Get Home page");
                 //Request all books 
-                CatalogVM catalog = BookService.GetBookList(new BookListRequestFilter { PageIndex = 0, PageSize = int.MaxValue });
+                IBookDetailsService BookService = UnityLocatorService.GetLocator<IBookDetailsService>();
+                CatalogVM catalog 
+                    = BookService.GetBookList(new BookListRequestFilter { PageIndex = 0, PageSize = int.MaxValue });
                 return View(catalog);
             }
             catch(Exception ex)
@@ -64,6 +62,7 @@ namespace LibrarySystem.Controllers
             Logger.Info("Get Book and borrowal details");
             try
             {
+                IBorrowBookService BookOperationService = UnityLocatorService.GetLocator<IBorrowBookService>();
                 return View(BookOperationService.GetBorrowBookDetails(bookID));
             }
             catch(Exception ex)
@@ -84,6 +83,7 @@ namespace LibrarySystem.Controllers
             Logger.Info("Return of the book");
             try
             {
+                IBorrowBookService BookOperationService = UnityLocatorService.GetLocator<IBorrowBookService>();
                 return View(BookOperationService.ReturnBook(bookID));
             }
             catch(Exception ex)
@@ -106,6 +106,8 @@ namespace LibrarySystem.Controllers
             Logger.Info("Borrowal of the book- show page");
             try
             {
+                IBookDetailsService BookService =  UnityLocatorService.GetLocator<IBookDetailsService>();
+                IPersonDetailsService PersonService = UnityLocatorService.GetLocator<IPersonDetailsService>();
                 Book bookDetail = BookService.GetBookDetail(bookID);
                 //Populate personIDs for selection
                 ViewBag.Persons = PersonService.GetPersonsList(
@@ -131,7 +133,8 @@ namespace LibrarySystem.Controllers
             Logger.Info("Execute Borrowal of the book");
             try
             {
-                //Populate personIDs for selection
+                IBorrowBookService BookOperationService = UnityLocatorService.GetLocator<IBorrowBookService>();
+                IPersonDetailsService PersonService = UnityLocatorService.GetLocator<IPersonDetailsService>();
                 ViewBag.Persons = PersonService.GetPersonsList(new PersonListRequestFilter { PageIndex = 0, PageSize = 100 })
                     .Persons.Select(x => x.PersonID);
                 ViewBag.Success = "Borrower has been updated!!";

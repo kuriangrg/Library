@@ -12,7 +12,7 @@ namespace BL.BookTransactionService
     public class BorrowBookService: IBorrowBookService
     {
         private readonly IBooksDataManager BookManager;
-        private readonly IPersonsDataManager PersonManager;
+        private readonly IUnityLocator UnityLocator;
         private readonly ILogger Logger;
 
         /// <summary>
@@ -22,10 +22,9 @@ namespace BL.BookTransactionService
         /// <param name="personsDataManager"></param>
         public BorrowBookService(IUnityLocator unityLocator)
         {
+            this.UnityLocator = unityLocator;
             this.BookManager = unityLocator.GetLocator<IBooksDataManager>();
-            this.PersonManager = unityLocator.GetLocator<IPersonsDataManager>();
             this.Logger = unityLocator.GetLocator<ILogger>();
-
         }
 
         /// <summary>
@@ -36,6 +35,7 @@ namespace BL.BookTransactionService
         public BookPersonVM GetBorrowBookDetails(string bookID)
         {
             Logger.Debug("GetBorrowBookDetails request" + bookID);
+            IPersonsDataManager PersonManager = UnityLocator.GetLocator<IPersonsDataManager>();
             Book bookDetails = BookManager.GetBookDetails(bookID);
             if (bookDetails != null)
             {
